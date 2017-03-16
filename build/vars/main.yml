@@ -1,0 +1,11 @@
+---
+s3fs_version: '1.80'
+s3fs_release: 1
+
+s3fs_changelog:
+
+  - release: 1
+    date: "Tue Mar 16 2017"
+    author: "Matěj Koudelka <matej@hxpro.cz>"
+    version: "1.80-1.el7.centos"
+    description: "Build v1.80"

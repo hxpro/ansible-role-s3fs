@@ -1,0 +1,27 @@
+---
+- name: Import hxpro gpg key
+  rpm_key:
+    state: present
+    key: https://hxpro.cz/gpg.asc
+
+- name: Copy rpm file
+  copy:
+    src="s3fs-fuse-1.80-1.el7.centos.x86_64.rpm"
+    dest=/usr/local/src/
+  register: s3fs_rpm
+
+- name: Install s3fs rpm
+  yum:
+    name="{{ s3fs_rpm.dest }}"
+    state=present
+
+- name: Check s3fs version
+  command: s3fs --version
+  register: version
+  changed_when: false
+  failed_when: "version.rc != 0"
+
+- name: Assert s3fs version
+  assert:
+    that:
+      - "'{{ s3fs_version }}' in version.stdout"

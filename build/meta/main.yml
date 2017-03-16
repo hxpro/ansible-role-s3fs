@@ -1,0 +1,18 @@
+galaxy_info:
+  author: Matěj Koudelka
+  description: Build RPM package fuse s3fs for CentOS7
+
+  license: license (WTFPL)
+
+  min_ansible_version: 2.2
+
+  platforms:
+    - name: EL
+      versions:
+        - 7
+
+  galaxy_tags: []
+
+dependencies:
+  - name: hxpro.epel
+    src: hxpro.epel

@@ -1,0 +1,46 @@
+Name:           s3fs-fuse
+Version:        {{ s3fs_version }}
+Release:        {{ s3fs_release }}%{?dist}
+Summary:        FUSE-based file system backed by Amazon S3
+
+License:        WTFPL
+URL:            https://github.com/%{name}/%{name}
+Source0:        https://github.com/%{name}/%{name}/archive/v%{version}.tar.gz
+
+BuildRequires:  automake fuse-devel gcc-c++ git libcurl-devel libxml2-devel make openssl-devel
+Requires:       fuse
+
+%description
+s3fs-fuse allows Linux to mount an S3 bucket via FUSE
+
+%prep
+%autosetup
+
+
+%build
+./autogen.sh
+./configure --prefix=/usr --with-openssl
+make
+
+
+%configure
+%make_build
+
+
+%install
+%make_install
+
+%files
+/usr/bin/s3fs
+%license
+%doc
+/usr/share/man/man1/s3fs.1.gz
+
+
+%changelog
+
+{% for change in s3fs_changelog|sort(reverse=true,attribute='release') %}
+* {{ change.date }} {{ change.author }} {{ change.version }}
+- {{ change.description }}
+
+{% endfor %}

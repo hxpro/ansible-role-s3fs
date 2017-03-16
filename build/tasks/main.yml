@@ -1,0 +1,44 @@
+---
+- name: Install packages
+  package: name={{ item }} state=latest
+  with_items:
+    - fedora-packager
+    - rpm-build
+    - rpmdevtools
+    - rpmlint
+    - patch
+    - automake
+    - fuse
+    - fuse-devel
+    - gcc-c++
+    - git
+    - libcurl-devel
+    - libxml2-devel
+    - make
+    - openssl-devel
+
+- name: Initialize rpmbuild directory
+  command: rpmdev-setuptree
+  args:
+    creates: './rpmbuild'
+
+- name: Generate spec file
+  template:
+    src=s3fs-fuse.spec.j2
+    dest='~/rpmbuild/SPECS/s3fs-fuse.spec'
+
+- name: Download sources
+  command: spectool -g -R s3fs-fuse.spec
+  args:
+    chdir: '~/rpmbuild/SPECS/'
+    creates: '~/rpmbuild/SOURCES/v{{ s3fs_version }}.tar.gz'
+
+- name: Build rpm
+  command: rpmbuild -ba s3fs-fuse.spec
+  args:
+    chdir: '~/rpmbuild/SPECS/'
+  register: build
+
+- name: debug build
+  debug: msg="{{ build.stdout_lines | select('match', 'Wrote:*') | list }}"
+

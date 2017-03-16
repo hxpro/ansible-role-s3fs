@@ -1,0 +1,41 @@
+---
+- name: prepare container for test build rpm
+  hosts: localhost
+  gather_facts: no
+  connection: local
+  vars:
+    container_name: "{{ playbook_dir|basename }}_build"
+
+  tasks:
+    - name: Create container centos7
+      docker_container:
+        name: "{{ container_name }}"
+        image: hxpro/docker-centos
+#        recreate: yes
+        privileged: true
+        command: /usr/sbin/init
+        volumes:
+          - "/sys/fs/cgroup:/sys/fs/cgroup:ro"
+        state: started
+
+    - name: add host to group
+      add_host: name="{{ container_name }}" groups=containers
+
+- name: provision role
+  hosts: containers
+  connection: docker
+  roles:
+    - role: "{{ playbook_dir }}/build"
+
+#- name: tear down
+#  hosts: localhost
+#  gather_facts: no
+#  connection: local
+#
+#  tasks:
+#    - name: Destroy containers
+#      docker_container:
+#        name: '{{ item }}'
+#        state: absent
+#      with_items:
+#        - centos7
