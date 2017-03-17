@@ -9,7 +9,8 @@ Role Variables
     s3fs_global_credential:
       - bucket: mybucketname (optional)
         identity: TXkgQVdTIGlkZW50aXR5IElEIGZvciBteWJ1Y2tldG5hbWUK
-        secret: TXkgQVdTIGlkZW50aXR5IHNlY3JldCBrZXkgZm9yIG15YnVja2V0bmFtZQo= 
+        secret: TXkgQVdTIGlkZW50aXR5IHNlY3JldCBrZXkgZm9yIG15YnVja2V0bmFtZQo=
+        state: present (present|absent)
     
     s3fs_bucket:
       - name: mybucketname
