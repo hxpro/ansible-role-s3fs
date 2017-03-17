@@ -1,0 +1,3 @@
+{% for credential in s3fs_global_credential %}
+{{ (credential.bucket + ':') if credential.bucket is defined else '' }}{{ credential.identity }}:{{ credential.secret }}
+{% endfor %}
