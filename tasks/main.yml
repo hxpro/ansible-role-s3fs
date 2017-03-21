@@ -32,6 +32,7 @@
     line: "{{ (item.bucket + ':') if item.bucket is defined else '' }}{{ item.identity }}:{{ item.secret }}"
     state: "{{ item.state|default('present') }}"
     mode: 0640
+    create: yes
   no_log: True
   with_items: "{{ s3fs_global_credential }}"
 
